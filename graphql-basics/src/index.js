@@ -18,7 +18,7 @@ const users = [
 const typeDefs = `
    type Query {
       post: Post!
-      users: [Users!]!
+      users(query: String): [Users!]!
       me: User!
    }
 
@@ -40,8 +40,11 @@ const typeDefs = `
 // Resolvers
 const resolvers = {
    Query: {
-      users(){
-         return users
+      users(parent, args, ctx , info){
+         if(!args.query){
+            return users
+         }
+         return users.filter(user=>user.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
       },
       me(){
          return users[0]
