@@ -88,6 +88,11 @@ const resolvers = {
       author(parent, args, ctx, info){
          return users.find(x=>x.id === parent.author)
       }
+   },
+   User: {
+      posts(parent, args, ctx, info){
+         return posts.filter(x=>x.author === parent.id)
+      }
    }
 }
 
