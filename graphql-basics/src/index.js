@@ -14,10 +14,26 @@ const users = [
    },
 ]
 
+const posts = [
+   {
+      id: '10',
+      title: 'Laup',
+      body: 'laup@example.com',
+      published: true,
+   },
+   {
+      id: '11',
+      title: 'Laup2',
+      body: 'laup2@example.com',
+      published: false,
+   },
+]
+
 // Type definitions (schemd)
 const typeDefs = `
    type Query {
       post: Post!
+      posts(query: String): [Posts!]! 
       users(query: String): [Users!]!
       me: User!
    }
@@ -45,6 +61,12 @@ const resolvers = {
             return users
          }
          return users.filter(user=>user.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
+      },
+      users(parent, args, ctx , info){
+         if(!args.query){
+            return users
+         }
+         return posts.filter(post=>post.body.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()) || post.title.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
       },
       me(){
          return users[0]
