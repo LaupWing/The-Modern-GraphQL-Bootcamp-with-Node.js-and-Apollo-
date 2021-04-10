@@ -20,12 +20,14 @@ const posts = [
       title: 'Laup',
       body: 'laup@example.com',
       published: true,
+      author: '1'
    },
    {
       id: '11',
       title: 'Laup2',
       body: 'laup2@example.com',
       published: false,
+      author: '1'
    },
 ]
 
@@ -33,8 +35,8 @@ const posts = [
 const typeDefs = `
    type Query {
       post: Post!
-      posts(query: String): [Posts!]! 
-      users(query: String): [Users!]!
+      posts(query: String): [Post!]! 
+      users(query: String): [User!]!
       me: User!
    }
 
@@ -43,6 +45,7 @@ const typeDefs = `
       body: String!
       title: String!
       published: Boolean!
+      author: User!
    }
 
    type User {
@@ -50,6 +53,7 @@ const typeDefs = `
       name: String!
       email: String!
       age: Int
+      posts: [Post!]!
    }
 `
 
@@ -62,9 +66,9 @@ const resolvers = {
          }
          return users.filter(user=>user.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
       },
-      users(parent, args, ctx , info){
+      posts(parent, args, ctx , info){
          if(!args.query){
-            return users
+            return posts
          }
          return posts.filter(post=>post.body.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()) || post.title.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
       },
@@ -78,6 +82,11 @@ const resolvers = {
             body: 'laup@example.com',
             published: true
          }
+      }
+   },
+   Post: {
+      author(parent, args, ctx, info){
+         return users.find(x=>x.id === parent.author)
       }
    }
 }
