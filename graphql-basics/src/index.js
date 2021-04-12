@@ -1,5 +1,5 @@
 import { GraphQLServer } from 'graphql-yoga'
-import uuidv4 from 'uuid/v4'
+import {v4 as uuidv4} from 'uuid'
 
 const users = [
    {
@@ -164,7 +164,7 @@ const resolvers = {
       },
       createComment(parent, args, ctx, info){
          const userExists = users.some(x=> x.id === args.author)
-         const postExists = post.find(x=> x.id === args.post)
+         const postExists = posts.find(x=> x.id === args.post)
          if(!userExists){
             throw new Error('User not found.')
          }
