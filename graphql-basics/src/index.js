@@ -73,6 +73,7 @@ const typeDefs = `
       createUser(data: CreateUserInput): User!
       createPost(title: String!, author: ID!, text: String!, published: Boolean!): Post!
       deleteUser(id: ID!): User!
+      deletePost(id: ID!): Post!
       createComment(text: String!, author: ID!, post: ID!): Comment!
    }
 
@@ -80,11 +81,6 @@ const typeDefs = `
       name: String!
       email: String!
       age: Int
-   }
-   input CreateUserInput {
-      title: String!
-      email: String!
-      author: ID!
    }
 
    type Post {
@@ -173,6 +169,28 @@ const resolvers = {
          })
          comments = comments.filter(x=>x.author !== args.id)
          return deletedUser[0]
+      },
+      createPost(parent, args, ctx, info){
+         const userExists = users.some(x=> x.id === args.author)
+         if(!userExists){
+            throw new Error('User not found.')
+         }
+         const post = {
+            id: uuidv4(),
+            ...args
+         }
+         posts.push(post)
+         return post
+      },
+      deletePost(parent, args, ctx, info){
+         const postExists = posts.find(x=> x.id === args.id)
+         if(!postExists){
+            throw new Error('Post not found.')
+         }
+         posts = posts.filter(x=>x.id !== args.id)
+         comments = comments.filter(x=>x.post !== args.id)
+         console.log(postExists)
+         return postExists
       },
       createPost(parent, args, ctx, info){
          const userExists = users.some(x=> x.id === args.author)
