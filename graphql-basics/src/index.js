@@ -74,6 +74,7 @@ const typeDefs = `
       createPost(title: String!, author: ID!, text: String!, published: Boolean!): Post!
       deleteUser(id: ID!): User!
       deletePost(id: ID!): Post!
+      deleteComment(id: ID!): Comment!
       createComment(text: String!, author: ID!, post: ID!): Comment!
    }
 
@@ -220,6 +221,16 @@ const resolvers = {
          comments.push(comment)
          return comment
       },
+      deleteComment(parent, args, ctx, info){
+         const commentExists = comments.find(x=> x.id === args.id)
+         if(!commentExists){
+            throw new Error('User not found.')
+         }
+         
+         comments = comments.filter(x=>x.id === args.id)
+
+         return commentExists
+      }
    },
    Post: {
       author(parent, args, ctx, info){
