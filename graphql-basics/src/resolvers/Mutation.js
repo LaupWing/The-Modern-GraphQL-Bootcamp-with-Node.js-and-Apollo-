@@ -74,7 +74,7 @@ const Mutation = {
          throw new Error('Post not found')
       }
       if(typeof data.body === 'string'){
-         post.body = post.body
+         post.body = data.body
       }
 
       if (typeof data.title === 'string'){
@@ -122,6 +122,23 @@ const Mutation = {
          ...args
       }
       db.comments.push(comment)
+      return comment
+   },
+   updateComment(parent, args, {db}, info){
+      const comment = db.comments.find(x=> x.id === args.id)
+      if(!comment){
+         throw new Error('Comment not found.')
+      }
+      if(typeof data.body === 'string'){
+         comment.body = data.body
+      }
+
+      if (typeof data.title === 'string'){
+         comment.title = data.title 
+      }
+      if (typeof data.published === 'boolean'){
+         comment.published = data.published 
+      }
       return comment
    },
    deleteComment(parent, args, {db}, info){
