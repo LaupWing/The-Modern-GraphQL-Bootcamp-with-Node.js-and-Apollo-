@@ -124,8 +124,8 @@ const Mutation = {
       db.comments.push(comment)
       return comment
    },
-   updateComment(parent, args, {db}, info){
-      const comment = db.comments.find(x=> x.id === args.id)
+   updateComment(parent, {data, id}, {db}, info){
+      const comment = db.comments.find(x=> x.id === id)
       if(!comment){
          throw new Error('Comment not found.')
       }
