@@ -81,3 +81,7 @@ type PostSubscriptionPayload {
    mutation: String!
    data: Post!
 }
+type CommentSubscriptionPayload {
+   mutation: String!
+   data: Comment!
+}
