@@ -164,7 +164,12 @@ const Mutation = {
          ...args
       }
       db.comments.push(comment)
-      pubsub.publish(`comment ${args.data.post}`, {comment})
+      pubsub.publish(`comment ${args.data.post}`, {
+         comment:{
+            mutation: 'CREATED',
+            data: comment
+         }
+      })
 
       return comment
    },
@@ -183,16 +188,27 @@ const Mutation = {
       if (typeof data.published === 'boolean'){
          comment.published = data.published 
       }
+      pubsub.publish(`comment ${comment.post}`, {
+         comment:{
+            mutation: 'UPDATED',
+            data: comment
+         }
+      })
       return comment
    },
-   deleteComment(parent, args, {db}, info){
+   deleteComment(parent, args, {db, pubsub}, info){
       const commentExists = db.comments.find(x=> x.id === args.id)
       if(!commentExists){
          throw new Error('User not found.')
       }
       
       db.comments = db.comments.filter(x=>x.id === args.id)
-
+      pubsub.publish(`comment ${commentExists.post}`, {
+         comment:{
+            mutation: 'DELETED',
+            data: commentExists
+         }
+      })
       return commentExists
    }
 }
