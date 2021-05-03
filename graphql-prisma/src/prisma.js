@@ -43,7 +43,7 @@ const updatePostForUser = async (id, update)=>{
    }, '{author {id name email posts {id title published }}}')
 
    return post.author
-
+}
 // createPostForUse('cknyl0dlk001b0a95fzum8td3', {
 //    body: 'test',
 //    title: 'test',
