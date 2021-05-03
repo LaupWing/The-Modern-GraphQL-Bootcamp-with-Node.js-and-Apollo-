@@ -6,6 +6,11 @@ const prisma = new Prisma({
 })
 
 const createPostForUse = async (authorId, data)=>{
+   const userExists = await prisma.exists.User({id: authorId})
+   if(!userExists){
+      throw new Error('User not found')
+   }
+
    await prisma.mutation.createPost({
       data:{
          ...data,
