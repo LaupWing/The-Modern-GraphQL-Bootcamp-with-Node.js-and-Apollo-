@@ -5,5 +5,20 @@ const prisma = new Prisma({
    endpoint: 'http://localhost:4466'
 })
 
-prisma.query.comments(null, '{ id text}')
-   .then(user=>console.log(user))
+// prisma.query.users(null, '{ id name}')
+//    .then(user=>console.log(user))
+
+// prisma.mutation.createPost({
+//    data:{
+//       title: 'My new post',
+//       body: 'New course',
+//       published: true,
+//       author: {
+//          connect:{
+//             id:"cknyl0dlk001b0a95fzum8td3"
+//          }
+//       }
+//    }
+// }, '{ id title body published }').then((data)=>{
+//    console.log(data)
+// })
