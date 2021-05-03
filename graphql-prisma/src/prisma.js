@@ -31,19 +31,18 @@ const createPostForUse = async (authorId, data)=>{
 }
 
 const updatePostForUser = async (id, update)=>{
+   const postExists = await prisma.exists.Post({id})
+   if(!postExists){
+      throw new Error('Post not found')
+   }
    const post = await prisma.mutation.updatePost({
       where:{
          id
       },
       data:{...update}
-   }, '{author {id}}')
+   }, '{author {id name email posts {id title published }}}')
 
-   const user = await prisma.query.user({
-      where:{
-         id: post.author.id
-      }
-   }, '{id name email posts {id title published}}')
-}
+   return post.author
 
 // createPostForUse('cknyl0dlk001b0a95fzum8td3', {
 //    body: 'test',
