@@ -8,12 +8,12 @@ type Book {
 	title: String!
 	author: String!
 	isbn: String!
-   author: Review! @relation(name: "ReviewToUser", onDelete: SET_NULL)
    reviews: [Review!]! @relation(name: "ReviewToBook", onDelete: CASCADE)
 }
 type Review {
+   author: Review! @relation(name: "ReviewToUser", onDelete: SET_NULL)
 	Book: Comment! @relation(name: "ReviewToBook", onDelete: SET_NULL)
 	id: ID! @unique
 	text: String
-   rating: Number!
+   rating: Int!
 }
