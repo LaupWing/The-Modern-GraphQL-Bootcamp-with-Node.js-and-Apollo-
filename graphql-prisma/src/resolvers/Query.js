@@ -1,17 +1,35 @@
 const Query = {
-   users(parent, args, {db, prisma} , info){
-      return prisma.query.users(null, info)
-      // if(!args.query){
-         //    return db.users
-         // }
-         // return db.users.filter(user=>user.name.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
-      },
-   posts(parent, args, {db, prisma} , info){
-      return prisma.query.posts(null, info)
-      // if(!args.query){
-      //    return db.posts
-      // }
-      // return db.posts.filter(post=>post.body.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()) || post.title.toLocaleLowerCase().includes(args.query.toLocaleLowerCase()))
+   users(parent, args, {prisma} , info){
+      const opArgs = {}
+      if(args.query){
+         opArgs.where = {
+            OR:[
+               {
+                  name_contains: args.query,
+               },
+               {
+                  email_contains: args.query
+               }
+            ]
+         }
+      }
+      return prisma.query.users(opArgs, info)
+   },
+   posts(parent, args, {prisma} , info){
+      const opArgs = {}
+      if(args.query){
+         opArgs.where = {
+            OR:[
+               {
+                  body_contains: args.query,
+               },
+               {
+                  title_contains: args.query
+               }
+            ]
+         }
+      }
+      return prisma.query.posts(opArgs, info)
    },
    me(){
       return users[0]
