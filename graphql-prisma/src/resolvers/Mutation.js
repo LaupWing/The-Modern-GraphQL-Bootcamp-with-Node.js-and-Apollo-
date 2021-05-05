@@ -1,35 +1,27 @@
 import {v4 as uuidv4} from 'uuid'
 
 const Mutation = {
-   createUser(parent, args, {db}, info){
-      const emailTaken = db.users.some(x=> x.email === args.data.email)
+   async createUser(parent, args, {prisma}, info){
+      const emailTaken = await prisma.exists.User({email: args.data.email})
+      
       if(emailTaken){
          throw new Error('Email is taken.')
       }
-      const user = {
-         id: uuidv4(),
-         ...args.data
-      }
-      db.users.push(user)
-      return user
+      return prisma.mutation.createUser({
+         data: args.data
+      }, info)
    },
-   deleteUser(parent, args, {db}, info){
-      const userIndex = db.users.findIndex(x=>x.id === args.id)
-      if(userIndex === -1){
+   async deleteUser(parent, args, {prisma}, info){
+      const userExists = await prisma.exists.User({id: args.id})
+
+      if(!userExists){
          throw new Error('User is not found')
       }
-      const deletedUser = db.users.splice(userIndex, 1)
-
-      db.posts = db.posts.filter(x=>{
-         const match = post.author === args.id
-         if(match){
-            comments = comments.filter(y=>y.post !== x.id)
+      return prisma.mutation.deleteUser({
+         where: {
+            id: args.id
          }
-
-         return !match
-      })
-      db.comments = db.comments.filter(x=>x.author !== args.id)
-      return deletedUser[0]
+      },info)
    },
    updateUser(parent, args, {db}, info){
       const {data, id} = args
