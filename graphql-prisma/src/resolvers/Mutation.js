@@ -35,6 +35,10 @@ const Mutation = {
       if(!isMatch){
          throw new Error('Unable to login')
       }
+      return {
+         user,
+         token: jwt.sign({userId: user.id}, 'thisisasecret')
+      }
    },
    async deleteUser(parent, args, {prisma}, info){
       const userExists = await prisma.exists.User({id: args.id})
