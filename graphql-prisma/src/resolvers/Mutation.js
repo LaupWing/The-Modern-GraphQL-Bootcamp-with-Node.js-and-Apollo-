@@ -75,7 +75,18 @@ const Mutation = {
          }
       }, info)
    },
-   updatePost(parent, {id, data}, {db, pubsub}, info){
+   async updatePost(parent, {id, data}, {prisma, request}, info){
+      const userId = getUserId(request)
+      const postExists = await prisma.exists.Post({
+         id: args.id,
+         author:{
+            id: userId
+         }
+      })
+
+      if(!postExists){
+         throw new Error('Operation failed')
+      }
       return prisma.mutation.updatePost({
          where:{
             id: args.id
@@ -112,13 +123,15 @@ const Mutation = {
       db.posts.push(post)
       return post
    },
-   createComment(parent, args, {prisma}, info){
+   createComment(parent, args, {prisma, request}, info){
+      const userId = getUserId(request)
+
       return prisma.mutation.createComment({
          data:{
             text:args.data.text,
             author:{
                connect:{
-                  id: args.data.author
+                  id: userId
                }
             },
             post:{
@@ -129,7 +142,17 @@ const Mutation = {
          }
       }, info)
    },
-   updateComment(parent, {data, id}, {prisma}, info){
+   async updateComment(parent, {data, id}, {prisma, request}, info){
+      const userId = getUserId(request)
+      const commentExists = await prisma.exists.Comment({
+         id: args.id,
+         author:{
+            id: userId
+         }
+      })
+      if(!commentExists){
+         throw new Error('Operation failed')
+      }
       return prisma.mutation.updateComment({
          where:{
             id: id
@@ -137,7 +160,17 @@ const Mutation = {
          data:args.data
       }, info)
    },
-   deleteComment(parent, args, {prisma}, info){
+   async deleteComment(parent, args, {prisma, request}, info){
+      const userId = getUserId(request)
+      const commentExists = await prisma.exists.Comment({
+         id: args.id,
+         author:{
+            id: userId
+         }
+      })
+      if(!commentExists){
+         throw new Error('Operation failed')
+      }
       return prisma.mutation.deleteComment({
          where:{
             id: args.id
