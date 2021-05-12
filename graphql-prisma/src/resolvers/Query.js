@@ -33,8 +33,14 @@ const Query = {
       }
       return prisma.query.posts(opArgs, info)
    },
-   me(){
-      return users[0]
+   me(parent, args, {prisma, request} , info){
+      const userId = getUserId(request)
+
+      return prisma.query.user({
+         where:{
+            id: userId
+         }
+      })
    },
    async post(parent, args, {prisma, request} , info){
       const userId = getUserId(request, false)
