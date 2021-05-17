@@ -5,6 +5,7 @@ const Query = {
       const opArgs = {
          first: args.first,
          skip: args.skip,
+         after: args.after,
       }
       if(args.query){
          opArgs.where = {
@@ -21,6 +22,7 @@ const Query = {
       const opArgs = {
          first: args.first,
          skip: args.skip,
+         after: args.after,
          where:{
             published: true
          }
@@ -40,6 +42,9 @@ const Query = {
    myPosts(parent, args, {prisma, request} , info){
       const userId = getUserId(request)
       const opArgs = {
+         first: args.first,
+         skip: args.skip,
+         after: args.after,
          where:{
             author: {
                id: userId
