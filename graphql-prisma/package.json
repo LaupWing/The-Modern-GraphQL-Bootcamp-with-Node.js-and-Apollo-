@@ -5,7 +5,7 @@
    "main": "index.js",
    "scripts": {
       "start": "nodemon src/index.js --ext js,graphql --exec babel-node",
-      "get-schema": "get-graphql-schema http://localhost:4466 > src/generated/prisma.graphql -h \"Authorization\"=\"bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNjIwMzg1MzcyLCJleHAiOjE2MjA5OTAxNzJ9.U3A-pkTsQkJTZu3-7BCQeX7RRbdYeCLOOu2dZA3uDxU\""
+      "get-schema": "get-graphql-schema http://localhost:4466 > src/generated/prisma.graphql -h \"Authorization\"=\"bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjp7InNlcnZpY2UiOiJkZWZhdWx0QGRlZmF1bHQiLCJyb2xlcyI6WyJhZG1pbiJdfSwiaWF0IjoxNjIxMzM2NDUxLCJleHAiOjE2MjE5NDEyNTF9.rQgUyPF4HY5AaQtEMu_T9C_f__f80P9cWcP094HziAA\""
    },
    "keywords": [],
    "author": "",
